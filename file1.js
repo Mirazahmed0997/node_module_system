@@ -1,3 +1,5 @@
-const var1= require('./file2')
+const {a,add,name}= require('./file2')
 
-console.log(var1)
+const sum=add(2,5)
+
+console.log(sum,a,name)
