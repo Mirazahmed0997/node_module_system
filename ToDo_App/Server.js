@@ -1,47 +1,52 @@
 const http= require("http")
 const { json } = require("stream/consumers")
+const path= require("path")
+const fs= require("fs")
 
 const PORT=5000
 
-const data= [
-  {
-    "title": "First Post",
-    "body": "This is the body of the first post.",
-    "created_at": "2025-08-23T02:30:00Z"
-  },
-  {
-    "title": "Second Post",
-    "body": "Here is some more content in the second post.",
-    "created_at": "2025-08-22T18:45:00Z"
-  },
-  {
-    "title": "Third Post",
-    "body": "Another entry with details about a new update.",
-    "created_at": "2025-08-21T12:10:00Z"
-  }
-]
+const file_path= path.join(__dirname, "./Db/todo.json")
+
+
 
 
 
 const server= http.createServer((req,res)=>
 {
-    // console.log(req.url,req.method)
-    // res.end(" Welcome to Node server")
+    // get all todos
     if(req.url==='/todos' && req.method==='GET')
     {
+        const data= fs.readFileSync(file_path,{encoding: "utf-8"})
         res.writeHead(200,{
             "content-type": "application/json",
         })
 
-        // another way to set header
-
-        // res.setHeader("content-type", "text/plain")
-        // res.setHeader("email", "istypartho@gmail.com")
-        // res.statusCode=201
-        res.end(JSON.stringify(data))
+        res.end(data)
     }
+
+    // post todo
+
     else if(req.url==='/todos/create_todos' && req.method==='POST'){
-        res.end('Create Todos')
+        let data= ""
+        req.on("data",(chunk)=>
+        {
+            data=data+chunk;
+        })
+
+
+        req.on("end",()=>
+        {
+            console.log(data)
+            const {title,body}= JSON.parse(data)
+            const created_at = new Date().toLocaleString();
+            const allTodos= fs.readFileSync(file_path,{encoding:"utf-8"})
+            const parseTodos=JSON.parse(allTodos)
+            parseTodos.push({title,body,created_at})
+            fs.writeFileSync(file_path,JSON.stringify(parseTodos,null,2),{encoding:"utf-8"})
+            res.end(JSON.stringify({title,body,created_at},null,2))
+        })
+
+        
     }
     else{
         res.end('Route Not Found')
