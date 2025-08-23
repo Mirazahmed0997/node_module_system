@@ -18,7 +18,10 @@ const server= http.createServer((req,res)=>
     const url = new URL(req.url, `http://${req.headers.host}`);
     const pathname= url.pathname
 
-    // get all todos
+
+
+
+    // get all todos---------
     if(pathname ==='/todos' && req.method==='GET')
     {
         const data= fs.readFileSync(file_path,{encoding: "utf-8"})
@@ -29,7 +32,7 @@ const server= http.createServer((req,res)=>
         res.end(data)
     }
 
-    // post todo
+    // post todo----------------
 
     else if(pathname ==='/todos/create_todos' && req.method==='POST'){
         let data= ""
@@ -53,6 +56,11 @@ const server= http.createServer((req,res)=>
         
     }
 
+
+
+    // get single todo------------
+
+
     else  if(pathname ==='/todo' && req.method==='GET')
     {
         const title= url.searchParams.get('title')
@@ -61,9 +69,7 @@ const server= http.createServer((req,res)=>
 
         const todo=parseData.find((todo)=>todo.title===title)
         const stringifyTodo= JSON.stringify(todo)
-        // res.writeHead(200,{
-        //     "content-type": "application/json",
-        // })
+     
 
         res.end(stringifyTodo)
     }
