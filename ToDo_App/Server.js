@@ -56,7 +56,6 @@ const server= http.createServer((req,res)=>
     else  if(pathname ==='/todo' && req.method==='GET')
     {
         const title= url.searchParams.get('title')
-        console.log(title)
         const data= fs.readFileSync(file_path,{encoding: "utf-8"})
         const parseData= JSON.parse(data)
 
@@ -68,6 +67,59 @@ const server= http.createServer((req,res)=>
 
         res.end(stringifyTodo)
     }
+
+
+
+
+        // update todo---------------------------------------
+
+     else if(pathname ==='/todos/update_todo' && req.method==='PATCH'){
+
+        const title= url.searchParams.get('title')
+        let data= ""
+        req.on("data",(chunk)=>
+        {
+            data=data+chunk;
+        })
+
+
+        req.on("end",()=>
+        {
+            const {body}= JSON.parse(data)
+            const allTodos= fs.readFileSync(file_path,{encoding:"utf-8"})
+
+            const parseTodos=JSON.parse(allTodos)
+
+            const indexTodo= parseTodos.findIndex((todo)=>todo.title===title)
+
+            parseTodos[indexTodo].body=body;
+
+            fs.writeFileSync(file_path,JSON.stringify(parseTodos,null,2),{encoding:"utf-8"})
+
+            res.end(JSON.stringify({title,body,created_at:parseTodos[indexTodo].created_at},null,2))
+        })        
+    }
+
+
+    
+        
+    
+    // delete todo---------------------------------------
+
+     else if(pathname ==='/todos/delete_todo' && req.method==='DELETE'){
+
+        const title= url.searchParams.get('title')
+        const allTodos = JSON.parse(fs.readFileSync(file_path, { encoding: "utf-8" }))
+
+        const deletedTodo = allTodos.filter(todo => todo.title !== title)
+
+         fs.writeFileSync(file_path,JSON.stringify(deletedTodo,null,2),{encoding:"utf-8"})
+
+        console.log(deletedTodo)
+    }
+
+
+
 
 
     else{
