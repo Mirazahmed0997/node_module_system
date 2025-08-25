@@ -1,13 +1,11 @@
-import app from "./app";
+import app from './app';
 
-const port = 5000
+const port = 5000;
 
-let server;
+const bootStrap = async () => {
+  app.listen(port, () => {
+    console.log(`🚀 Server is running at http://localhost:${port}`);
+  });
+};
 
-const bootStrap =async ()=>
-{
-    server= app.listen(5000, () => {
-    console.log(`Example app listening on ${port}`)
-})
-
-}
+bootStrap();
