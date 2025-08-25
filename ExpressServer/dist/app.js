@@ -9,14 +9,23 @@ const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const file_path = path_1.default.join(__dirname, "../DB/todo.json");
+// Root------
 app.get('/', (req, res) => {
     res.send('Welcome to TODO App');
 });
+// all todos------
 app.get('/todos', (req, res) => {
     const data = fs_1.default.readFileSync(file_path, { encoding: "utf-8" });
-    console.log(data);
     res.json(data);
 });
+// single todo-----
+app.get('/todos/:title', (req, res) => {
+    console.log("quere", req.query);
+    console.log(req.params);
+    //  const data= fs.readFileSync(file_path,{encoding: "utf-8"})
+    //     res.json(data);
+});
+// create  todo-------
 app.post('/todos/create_todos', (req, res) => {
     const { title, body } = req.body;
     console.log(title, body);
