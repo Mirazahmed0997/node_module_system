@@ -1,0 +1,17 @@
+[
+  {
+    "title": "First Post",
+    "body": "Updated again.",
+    "created_at": "2025-08-23T02:30:00Z"
+  },
+  {
+    "title": "Second Post",
+    "body": "Here is some more content in the second post.",
+    "created_at": "2025-08-22T18:45:00Z"
+  },
+  {
+    "title": "Third Post",
+    "body": "Another entry with details about a new update.",
+    "created_at": "2025-08-21T12:10:00Z"
+  }
+]
