@@ -11,8 +11,20 @@ app.use(express.json())
 const userRouter=express.Router();
 
 const noteSchema= new Schema({
-  title:String,
-  content: String
+  title:{type: String, required: true, trim: true},
+  content: {type: String, required: true,default:" "},
+  category: {
+    type: String, 
+    enum: ['Personal', "Professional","Student","Work"],
+    default:"Personal",
+  },
+  
+  pinned: {type:Boolean, default:false},
+  tags:{
+    label: {type:String,required:true},
+    color: {type: String, default:'grey'}
+  }
+
 })
 
 
@@ -21,9 +33,10 @@ const Note = mongoose.model("Note", noteSchema)
 app.post('/create-note',async(req: Request,res:Response)=>
 {
   const myNote= new Note({
-    title: "Database",
-    content: "Learnig Mongoose",
-   
+    title: "Backend",
+    tags:{
+      label: "Express.js"
+    }
   })
 
   await myNote.save()
