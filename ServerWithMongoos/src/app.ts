@@ -3,7 +3,8 @@ import fs from "fs"
 import mongoose, { model, Schema } from 'mongoose';
 import path from "path"
 import { title } from 'process';
-
+import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 
 const app: Application = express();
@@ -30,14 +31,25 @@ const noteSchema= new Schema({
 
 const Note = mongoose.model("Note", noteSchema)
 
-app.post('/create-note',async(req: Request,res:Response)=>
+
+
+
+app.get('/',  async (req: Request, res: Response) => {
+
+
+  res.send("Welcome to Note App")
+  
+
+});
+
+
+
+app.post('/note/create-note',async(req: Request,res:Response)=>
 {
-  const myNote= new Note({
-    title: "Backend",
-    tags:{
-      label: "Express.js"
-    }
-  })
+
+  const body =req.body;
+
+  const myNote= await Note.create(body)
 
   await myNote.save()
 
@@ -48,10 +60,46 @@ app.post('/create-note',async(req: Request,res:Response)=>
   })
 })
 
-app.get('/', (req: Request, res: Response) => {
-  
-  res.send("welcome to Hello app");
+app.get('/notes',  async (req: Request, res: Response) => {
 
+
+  const myNotes= await Note.find()
+
+
+  res.status(201).json({
+    success: true,
+    message: "Note created Successfully Created",
+    notes: myNotes
+  })
+});
+app.get('/notes/:id',  async (req: Request, res: Response) => {
+
+  const param =req.params.id
+  // const myNotes = await Note.findById(param);
+  const myNotes = await Note.findOne({_id: param});
+
+
+  res.status(201).json({
+    success: true,
+    message: "Note created Successfully Created",
+    notes: myNotes
+  })
+});
+
+
+app.patch('/updateNote/:id',  async (req: Request, res: Response) => {
+
+  const param =req.params.id
+  const updatedBody= req.body;
+  // const upadatedNote = await Note.findByIdAndUpdate(param,updatedBody,{new:true});
+  const upadatedNote = await Note.updateOne({_id:param},updatedBody,{new:true});
+
+
+  res.status(201).json({
+    success: true,
+    message: "Note updated Successfully Created",
+    upadatedNote
+  })
 });
 
 
