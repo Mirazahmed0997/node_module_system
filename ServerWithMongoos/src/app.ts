@@ -6,6 +6,7 @@ import { title } from 'process';
 import { ObjectId } from 'mongoose';
 import { Note } from './models/note.models';
 import { notesRoutes } from './Controlers/note.controller';
+import { userRoutes } from './Controlers/User.controller';
 
 
 const app: Application = express();
@@ -14,12 +15,13 @@ const userRouter=express.Router();
 
 
 app.use('/notes',notesRoutes)
+app.use('/user',userRoutes)
 
 
 app.get('/',  async (req: Request, res: Response) => {
 
 
-  res.send("Welcome to Note App")
+  res.send("Welcome to User App")
   
 
 });

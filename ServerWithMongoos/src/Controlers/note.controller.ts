@@ -33,7 +33,7 @@ notesRoutes.get('/',  async (req: Request, res: Response) => {
 
   res.status(201).json({
     success: true,
-    message: "Note created Successfully Created",
+    message: "All notes",
     notes: myNotes
   })
 });
