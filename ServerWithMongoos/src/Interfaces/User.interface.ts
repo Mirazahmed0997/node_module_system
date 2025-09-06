@@ -1,9 +1,8 @@
-
-
 export interface UserInterface {
-    firstName: String,
-    lastName:String,
-    email: String,
-    password: String,
-    role: "user" | "admin"
+    firstName: string;
+    lastName: string;
+    age: number;  // ✅ should be number
+    email: string;
+    password: string;
+    role: "USER" | "ADMIN" | "SUPER ADMIN";  // ✅ must match schema enum
 }
