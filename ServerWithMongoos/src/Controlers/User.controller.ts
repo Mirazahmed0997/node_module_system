@@ -6,6 +6,7 @@ import z from "zod";
 
 export const userRoutes= express.Router();
 
+import { z } from "zod";
 
 export const createUserZodSchema = z.object({
   firstName: z
@@ -37,10 +38,33 @@ export const createUserZodSchema = z.object({
     .trim(),
     
   role: z.enum(["USER", "ADMIN", "SUPER ADMIN"])
-       .default("USER")
-       .optional(),
+    .default("USER")
+    .optional(),
 
+  // Address validation schema
+  address: z.object({
+    city: z
+      .string()
+      .min(2, { message: "City must be at least 2 characters long" })
+      .trim(),
+      
+    street: z
+      .string()
+      .min(5, { message: "Street must be at least 5 characters long" })
+      .trim(),
+      
+    zip: z
+      .number()
+      .min(10000, { message: "Zip code must be at least 5 digits long" })
+      .max(99999, { message: "Zip code must be at most 5 digits long" })
+  }).refine((data) => {
+    // Custom check if necessary
+    return data.city && data.street && data.zip;
+  }, {
+    message: "Address fields are required."
+  })
 });
+
 
 
 userRoutes.post('/create', async (req: Request, res: Response) => {
