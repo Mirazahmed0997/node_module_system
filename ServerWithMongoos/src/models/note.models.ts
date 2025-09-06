@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 import { NoteInterface } from "../Interfaces/noteInterface";
+import { Types } from 'mongoose';
+
 
 
 
@@ -16,8 +18,12 @@ const noteSchema= new Schema<NoteInterface>({
   tags:{
     label: {type:String,required:true},
     color: {type: String, default:'grey'}
-  }
-
+  },
+user: {
+  type:Schema.Types.ObjectId,
+  ref: "User",
+  required:true
+}
 },
 {
   versionKey: false,

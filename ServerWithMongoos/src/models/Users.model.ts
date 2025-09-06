@@ -36,8 +36,7 @@ const userSchema = new Schema<UserInterface>({
     },
     password: {type: String, required:true,trim:true},
     role: {type: String,enum: {values:['USER','ADMIN','SUPER ADMIN'], message:"Role is not Found"} , default:'USER',required:true,trim:true,uppercase:true},
-    address: { type: addressSchema}
-    
+    address: { type: addressSchema},
 },
 {
     versionKey: false,

@@ -1,3 +1,8 @@
+import { ObjectId } from 'mongodb';
+import { Types } from 'mongoose';
+
+
+
 export interface NoteInterface {
   title: string;
   content?: string; // optional because you have default: " "
@@ -7,6 +12,7 @@ export interface NoteInterface {
     label: string;
     color?: string; // optional because default is "grey"
   };
+  user:Types.ObjectId;
   createdAt?: Date; // timestamps add this automatically
   updatedAt?: Date; // timestamps add this automatically
 }

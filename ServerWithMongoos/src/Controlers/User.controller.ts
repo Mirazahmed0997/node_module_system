@@ -6,7 +6,6 @@ import z from "zod";
 
 export const userRoutes= express.Router();
 
-import { z } from "zod";
 
 export const createUserZodSchema = z.object({
   firstName: z
