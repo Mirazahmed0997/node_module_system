@@ -71,9 +71,9 @@ userRoutes.post('/create', async (req: Request, res: Response) => {
     // ✅ Await schema validation
     const body = await createUserZodSchema.parseAsync(req.body);
 
-    const password= await User.hashPassword(body.password)
+    // const password= await User.hashPassword(body.password)
 
-    body.password=password;
+    // body.password=password;
     const user = await User.create(body);
 
     // built in custom instance method
@@ -83,7 +83,7 @@ userRoutes.post('/create', async (req: Request, res: Response) => {
     // user.password=password
 
 
-    // built in custom static mathod
+    // built in custom static method
 
 
     console.log(user)
