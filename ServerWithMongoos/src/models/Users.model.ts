@@ -3,6 +3,7 @@ import { Address, UserInterface, userInterfaceMethod, userStaticMethod } from ".
 import validator from 'validator'
 import { required } from "zod/mini";
 import  bcrypt  from 'bcryptjs';
+import { Note } from "./note.models";
 
 
 const addressSchema= new Schema<Address>({
@@ -56,12 +57,29 @@ userSchema.static("hashPassword", async function(rawPassword:string){
 })
 
 
-userSchema.pre("save",async function(){
+userSchema.pre("save",async function(next){
     this.password=await bcrypt.hash(this.password,10)
+    next();
 })
 
-userSchema.post("save",async function(doc){
+userSchema.pre("find", async function(next)
+{
+    console.log("find")
+    next();
+})
+
+userSchema.post("save",async function(doc,next){
     console.log("Post hook",doc._id)
+    next()
+})
+
+userSchema.post("findOneAndDelete", async function(doc,next)
+{
+    if(doc)
+    {
+        await Note.deleteMany({user: doc._id})
+    }
+    next()
 })
 
 
