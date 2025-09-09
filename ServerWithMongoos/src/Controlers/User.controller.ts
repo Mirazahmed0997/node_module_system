@@ -72,7 +72,10 @@ userRoutes.post('/create', async (req: Request, res: Response) => {
     const body = await createUserZodSchema.parseAsync(req.body);
 
     // ✅ Create user (User.create already saves to DB)
-    const user = await User.create(body);
+    // const user = await User.create(body);
+    const user= new User(body)
+    user.hashPassword(req.body.password)
+    await user.save();
 
     res.status(201).json({
       success: true,

@@ -1,7 +1,9 @@
-import { model, Schema, version } from "mongoose";
-import { Address, UserInterface } from "../Interfaces/User.interface";
+import { Model, model, Schema, version } from "mongoose";
+import { Address, UserInterface, userInterfaceMethod } from "../Interfaces/User.interface";
 import validator from 'validator'
 import { required } from "zod/mini";
+import  bcrypt  from 'bcryptjs';
+
 
 const addressSchema= new Schema<Address>({
     city:{type: String,  required: true},
@@ -13,7 +15,7 @@ const addressSchema= new Schema<Address>({
 }
 )
 
-const userSchema = new Schema<UserInterface>({
+const userSchema = new Schema<UserInterface, Model<UserInterface> ,userInterfaceMethod>({
     firstName: {type: String, required:true,trim:true, minlength:4,maxlength:10},
     lastName: {type: String, required:true,trim:true,minlength:[4, 'Must be at least 4 character, got {VALUE}'],maxlength:10},
     age: {type: Number, required:true,trim:true, min:[18, 'Must be at least 6, got {VALUE}'],max:[60, 'Must be at most 60, got {VALUE}']},
@@ -41,6 +43,13 @@ const userSchema = new Schema<UserInterface>({
 {
     versionKey: false,
     timestamps:true
+})
+
+userSchema.method("hashPassword", async function(realPassword:String){
+        const password= await bcrypt.hash(realPassword,10)
+        this.password=password;
+        return password
+
 })
 
 export const  User = model("User", userSchema)

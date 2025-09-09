@@ -16,3 +16,9 @@ export interface UserInterface {
     address: Address;
 }
 
+
+
+export interface userInterfaceMethod{
+    hashPassword(password: String): String
+}
+
