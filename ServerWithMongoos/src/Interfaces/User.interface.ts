@@ -1,3 +1,4 @@
+import { Model } from "mongoose";
 
 
 export interface Address {
@@ -19,6 +20,11 @@ export interface UserInterface {
 
 
 export interface userInterfaceMethod{
-    hashPassword(password: String): String
+    hashPassword(password: string): string
+}
+
+
+export interface userStaticMethod extends Model<UserInterface>{
+        hashPassword(password: string): string
 }
 

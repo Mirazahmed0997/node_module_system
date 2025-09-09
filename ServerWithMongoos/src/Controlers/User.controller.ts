@@ -71,10 +71,22 @@ userRoutes.post('/create', async (req: Request, res: Response) => {
     // ✅ Await schema validation
     const body = await createUserZodSchema.parseAsync(req.body);
 
-    // ✅ Create user (User.create already saves to DB)
-    // const user = await User.create(body);
-    const user= new User(body)
-    user.hashPassword(req.body.password)
+    const password= await User.hashPassword(body.password)
+
+    body.password=password;
+    const user = await User.create(body);
+
+    // built in custom instance method
+    // const user= new User(body)
+    // const password= await user.hashPassword(req.body.password)
+    // console.log(password)
+    // user.password=password
+
+
+    // built in custom static mathod
+
+
+    console.log(user)
     await user.save();
 
     res.status(201).json({
